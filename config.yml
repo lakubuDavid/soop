@@ -32,5 +32,22 @@ csharp-console:
 echo:
   command: "echo {name}"
   description: "Just echoes back the name"
-  dockerfile_path: "templates/echo.dockerfile"
   mkdir: true
+  
+# my_template:
+#   # Command to execute to generate a project which takes as parameter the name of the project as {name}
+#   command: 
+#   description:
+#   # The name of source file
+#   source: main.lang
+#   # The path to the source file
+#   source_path: templates/my_template/source.lang
+#     # Wheter or not a new directory should be created
+#   # The directory name will be the name of the project
+#   mkdir: false # false by default
+#   # A command to run to check if the necessary tools are available
+#   check:  # e.g. A simple `--version` will d o the trick
+#   # A template justfile
+#   justfile_path: templates/my_template.justfile # 'templates/my_template/my_template.justfile'
+#   # A template dockerfile
+#   dockerfile_path: templates/my_template.dockerfile # 'templates/my_template/my_template.dockerfile'
