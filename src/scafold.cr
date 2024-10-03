@@ -1,5 +1,6 @@
 require "commander"
-# require "toml"
+require "colorful"
+
 require "./language_initializer"
 require "./config"
 class Scafold
@@ -28,13 +29,23 @@ class Scafold
           puts ""
           
           config.keys.each do |key|
-            line = "• #{key} "
+            # line = "• #{key} "
             value = config[key]
-            description = value.as_h["description"]?.try(&.as_s) || ""
-            spacing = " " * (20 - key.size)
-            puts "• #{key}#{spacing}: #{description}"
+            # description = value.as_h["description"]?.try(&.as_s) || ""
+            # spacing = " " * (20 - key.size)
+            # puts "• #{key}#{spacing}: #{description}"
+            puts "• #{key} : ".cyan
+            puts "   - Description: #{value.as_h["description"]?.try(&.as_s) || " - None - "}"
+            status = LanguageInitializer.get_lang_status(value.as_h,key)
+              print "   \- Status : "
+            if status == 0 
+              print " Ok\n".green
+            elsif status == -1
+              print " Failed check\n".red
+            else
+              print " Unknown\n".yellow
+            end
           end
-          puts ""
         end
       end
       cmd.commands.add do |cmd|
@@ -63,12 +74,12 @@ class Scafold
           name = options.string["name"]
 
           if language.nil? || language.empty?
-            puts "Error: Language is required."
+            puts "Error: Language is required.".red
             puts cmd.help
             exit(1)
           end
           if name.nil? || name.empty?
-            puts "Error: Project name is required."
+            puts "Error: Project name is required.".red
             puts cmd.help
             exit(1)
           end
@@ -78,7 +89,7 @@ class Scafold
             # puts lang_config
             LanguageInitializer.initialize_project(lang_config, language, name)
           else
-            puts "Unknown template: #{language}"
+            puts "Unknown template: #{language}".red
             exit(1)
           end
         end

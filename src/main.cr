@@ -1,3 +1,8 @@
-require "./scafold"
+require "colorful"
 
-Scafold.run
+require "./scafold"
+begin
+  Scafold.run
+rescue ex
+  puts "Error : #{ex.message}".red
+end
