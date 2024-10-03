@@ -1,0 +1,3 @@
+require "./scafold"
+
+Scafold.run

@@ -1,0 +1,36 @@
+
+crystal:
+  command: "crystal init app {name}"
+  description: "Simple hello world program in Crystal"
+  check: "crystal -v"
+  mkdir: false
+  justfile_path: "templates/crystal.justfile"
+
+java-console:
+  command: >-
+    mvn archetype:generate -DgroupId=com.{name}.app -DartifactId={name}
+    -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5
+    -DinteractiveMode=false
+  description: "Simple hello world console application in Java"
+  check: "mvn -v"
+  mkdir: false
+  justfile_path: "templates/java.justfile"
+
+python:
+  source: "main.py"
+  source_path: "templates/python/main.py"
+  description: "Simple hello world program in Python"
+  check: "python --version"
+  mkdir: true
+  justfile_path: "templates/python.justfile"
+
+csharp-console:
+  command: "dotnet new console -o {name} --use-program-main"
+  description: "Simple hello world console application in C#"
+  check: "dotnet --version"
+
+echo:
+  command: "echo {name}"
+  description: "Just echoes back the name"
+  dockerfile_path: "templates/echo.dockerfile"
+  mkdir: true

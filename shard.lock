@@ -1,0 +1,26 @@
+version: 2.0
+shards:
+  colorful:
+    git: https://github.com/icyleaf/colorful.cr.git
+    version: 0.1.0
+
+  commander:
+    git: https://github.com/mrrooijen/commander.git
+    version: 0.4.0
+
+  popcorn:
+    git: https://github.com/icyleaf/popcorn.git
+    version: 0.3.0
+
+  toml:
+    git: https://github.com/crystal-community/toml.cr.git
+    version: 0.8.1
+
+  toml-config:
+    git: https://github.com/maiha/toml-config.cr.git
+    version: 0.7.0
+
+  totem:
+    git: https://github.com/icyleaf/totem.git
+    version: 0.7.0
+

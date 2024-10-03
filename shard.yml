@@ -1,0 +1,27 @@
+name: scafold
+version: 0.1.0
+
+authors:
+  - lakubuDavid <Lakubudavid@gmail.com>
+dependencies:
+ colorful:
+  github: icyleaf/colorful.cr
+  version: ~> 0.1.0
+ commander:
+    github: mrrooijen/commander
+    version: ~> 0.4.0
+ toml-config:
+    github: maiha/toml-config.cr
+    version: ~> 0.7.0
+ totem:
+    github: icyleaf/totem
+
+ toml:
+    github: crystal-community/toml.cr
+targets:
+  scafold:
+    main: src/main.cr
+
+crystal: '>= 1.13.2'
+
+license: MIT
