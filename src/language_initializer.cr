@@ -19,24 +19,25 @@ class LanguageInitializer
   # 1  : Unknown
   # 0  : Ok
   # -1 : Failed
-  def self.get_lang_status(config : Hash,language : String)
+  def self.get_lang_status(config : Hash, language : String)
     begin
-    if config.has_key?("check")
-      (`where #{config["check"]}`)
-      if $?.exit_code == 0
-        return 0
+      if config.has_key?("check")
+        (`which #{config["check"]}`)
+        if $?.exit_code == 0
+          return 0
+        else
+          return -1
+        end
       else
-        return -1
+        puts "   - Warning : No check set".yellow
+        1
       end
-    else
-    puts "   - Warning : No check set".yellow
+    rescue ex
+      puts "   - Error during check : #{ex.message}".red
       1
     end
-    rescue ex
-    puts "   - Error during check : #{ex.message}".red
-    1
-    end
   end
+
   def self.initialize_project(config : Hash, language : String, name : String)
     begin
       puts "➤ Initializing #{language} project: #{name}\n".green

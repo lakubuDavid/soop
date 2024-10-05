@@ -6,3 +6,6 @@
 
 @build:
     crystal build src/main.cr --release -o build/soop
+
+@install-tool: build
+    cp ./build/soop ~/tools

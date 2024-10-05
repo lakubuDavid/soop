@@ -33,7 +33,6 @@ echo:
   command: "echo {name}"
   description: "Just echoes back the name"
   mkdir: true
-  check: "echo"
   
 # my_template:
 #   # Command to execute to generate a project which takes as parameter the name of the project as {name}
