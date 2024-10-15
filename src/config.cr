@@ -7,18 +7,6 @@ end
 struct SoopConfigs
   include Totem::ConfigBuilder
 
-  # property command : String
-  # property description : String
-  # property source : String
-
-  # property check : String
-
-  # property mkdir : Bool
-
-  # property justfile_path : String
-  # property dockerfile_path : String
-  # property source_path : String
-
   build do
     config_type "yaml"
     config_paths ["/etc/soop/", Path["~/.config/soop/"].expand(home: true).to_s, "./"]

@@ -1,8 +1,11 @@
 /docs/
 /lib/
 /bin/
+/build/
 /.shards/
 *.dwarf
 
 # templates/
-Test/
+tmp/
+.aider*
+.mypy_cache/

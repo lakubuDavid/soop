@@ -3,19 +3,25 @@ require "colorful"
 
 require "./language_initializer"
 require "./config"
+
 class Scafold
-  VERSION   = "0.1.0"
+  VERSION   = "0.1.1"
   TOOL_NAME = "soop"
 
   def self.run
-    # config = ScafoldConfig.parse_file("config.toml")
-    # config = TOML::Config.parse_file("config.toml")
     config = SoopConfigs.configure
-    # config = TOML.parse_file("config.toml")
 
     cli = Commander::Command.new do |cmd|
       cmd.use = TOOL_NAME
       cmd.long = "A small tool to initialize projects and generate runners for various languages."
+
+      cmd.flags.add do |flag|
+        flag.name = "config"
+        flag.short = "-c"
+        flag.long = "--config"
+        flag.default = ""
+        flag.description = "The default path for the custom vonfig."
+      end
 
       cmd.run do |options, arguments|
         puts cmd.help
@@ -27,18 +33,13 @@ class Scafold
 
         cmd.run do |options, arguments|
           puts ""
-          
           config.keys.each do |key|
-            # line = "• #{key} "
             value = config[key]
-            # description = value.as_h["description"]?.try(&.as_s) || ""
-            # spacing = " " * (20 - key.size)
-            # puts "• #{key}#{spacing}: #{description}"
             puts "• #{key} : ".cyan
-            puts "   - Description: #{value.as_h["description"]?.try(&.as_s) || " - None - "}"
-            status = LanguageInitializer.get_lang_status(value.as_h,key)
-              print "   \- Status : "
-            if status == 0 
+            puts "  - Description: #{value.as_h["description"]?.try(&.as_s) || " - None - "} " # "
+            status = LanguageInitializer.get_lang_status(value.as_h, key)
+            print "   - Status : "
+            if status == 0
               print " Ok\n".green
             elsif status == -1
               print " Failed check\n".red
@@ -49,7 +50,7 @@ class Scafold
         end
       end
       cmd.commands.add do |cmd|
-        cmd.use = "brew <flags>"
+        cmd.use = "make <flags>"
         cmd.short = "Create a new project."
         cmd.long = cmd.short
 
@@ -69,25 +70,33 @@ class Scafold
           flag.description = "The name of the project."
         end
 
+        cmd.flags.add do |flag|
+          flag.name = "output"
+          flag.short = "-o"
+          flag.long = "--output"
+          flag.default = ""
+          flag.description = "The output path for the project."
+        end
+
         cmd.run do |options, arguments|
           language = options.string["language"]
           name = options.string["name"]
+          output_path = options.string["output"]
 
           if language.nil? || language.empty?
-            puts "Error: Language is required.".red
+            puts " Error: Language is required.".red
             puts cmd.help
             exit(1)
           end
           if name.nil? || name.empty?
-            puts "Error: Project name is required.".red
+            puts " Error: Project name is required.".red
             puts cmd.help
             exit(1)
           end
 
           if config.has_key? language
             lang_config = config[language].as_h
-            # puts lang_config
-            LanguageInitializer.initialize_project(lang_config, language, name)
+            LanguageInitializer.initialize_project(lang_config, language, name, output_path)
           else
             puts "Unknown template: #{language}".red
             exit(1)

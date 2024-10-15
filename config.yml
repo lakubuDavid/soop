@@ -1,6 +1,31 @@
-
+go:
+  command: >-
+    go mod init {name}
+  description: "Base golang console app"
+  check: "go"
+  mkdir: true
+  justfile_path: "templates/go.justfile"
+go-air:
+  command: >-
+    go mod init {name} &&
+    air init"
+  description: "Base golang console app with hot reload (require air installed)"
+  check: "go air"
+  mkdir: true
+  justfile_path: "templates/go-air.justfile"
+go-backend:
+  command: >-
+    go mod init {name} &&
+    go get github.com/go-chi/chi/v5 &&
+    go get github.com/mattn/go-sqlite3  &&
+    air init"
+  description: "Basic golang backend (chi,sqlc,dbmate,sqlite) app with hot reload (requires air,sqlc and dbmate installed)"
+  check: "go air dbmate sqlc"
+  mkdir: true
+  justfile_path: "templates/go-air.justfile"
 crystal:
-  command: "crystal init app {name}"
+  command: >-
+    crystal init app {name}
   description: "Simple hello world program in Crystal"
   check: "crystal"
   mkdir: false
@@ -17,37 +42,21 @@ java-console:
   justfile_path: "templates/java.justfile"
 
 python:
-  source: "main.py"
-  source_path: "templates/python/main.py"
+  sources:
+    "main.py": "templates/python/main.py"
   description: "Simple hello world program in Python"
   check: "python3"
   mkdir: true
   justfile_path: "templates/python.justfile"
 
 csharp-console:
-  command: "dotnet new console -o {name} --use-program-main"
+  command: >-
+    dotnet new console -o {name} --use-program-main
   description: "Simple hello world console application in C#"
   check: "dotnet"
 
 echo:
-  command: "echo {name}"
+  command: >-
+    echo {name}
   description: "Just echoes back the name"
-  mkdir: true
-  
-# my_template:
-#   # Command to execute to generate a project which takes as parameter the name of the project as {name}
-#   command: 
-#   description:
-#   # The name of source file
-#   source: main.lang
-#   # The path to the source file
-#   source_path: templates/my_template/source.lang
-#     # Wheter or not a new directory should be created
-#   # The directory name will be the name of the project
-#   mkdir: false # false by default
-#   # A command to run to check if the necessary tools are available
-#   check:  # e.g. A simple `--version` will d o the trick
-#   # A template justfile
-#   justfile_path: templates/my_template.justfile # 'templates/my_template/my_template.justfile'
-#   # A template dockerfile
-#   dockerfile_path: templates/my_template.dockerfile # 'templates/my_template/my_template.dockerfile'
+  check: "echo"
