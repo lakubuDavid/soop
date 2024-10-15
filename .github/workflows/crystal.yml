@@ -11,44 +11,43 @@
 
 #     runs-on: ubuntu-latest
 
-#     container:
-#       image: crystallang/crystal
-
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Install dependencies
-#       run: shards install
-#     - name: Run tests
-#       run: crystal build
 name: Build and Release
-
+permissions:
+  contents: write
+  packages: write
 on:
   push:
     tags:
       - '*'
-
+  workflow_dispatch:
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    
+    runs-on: ubuntu-latest
+
+    container:
+      image: crystallang/crystal  
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: shards install
+      
+      # - name: Set up Just
+      #   run: |
+      #     curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
 
-      - name: Set up Just
-        run: |
-          curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+      # - name: Build with Just
+      #   run: just build
 
-      - name: Build with Just
-        run: just build
-
+      - name: Build
+        run: crystal build src/main.cr --release --cross-compile --static --link-flags -L/usr/lib -o build/soop
+        
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ runner.os }}
+          name: build
           path: build/
 
   release:
@@ -58,10 +57,11 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-*
+          name: build
           path: build/
 
       - name: Create release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -69,5 +69,14 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           draft: false
-          prerelease: false
-          files: build/**/*
+          prerelease: true
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./build/soop
+          asset_name: soop-release-${{ github.ref }}
+          # asset_content_type: application/zip
