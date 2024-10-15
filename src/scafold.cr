@@ -5,7 +5,7 @@ require "./language_initializer"
 require "./config"
 
 class Scafold
-  VERSION   = "0.1.1"
+  VERSION   = "0.1.0"
   TOOL_NAME = "soop"
 
   def self.run
