@@ -32,12 +32,15 @@ jobs:
       - name: Install dependencies
         run: shards install
       
-      - name: Set up Just
-        run: |
-          curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+      # - name: Set up Just
+      #   run: |
+      #     curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
 
-      - name: Build with Just
-        run: just build
+      # - name: Build with Just
+      #   run: just build
+
+      - name: Build
+        run: crystal build src/main.cr --release --cross-compile --static --link-flags -L/usr/lib -o build/soop
 
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
