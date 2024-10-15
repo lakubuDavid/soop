@@ -1,6 +1,7 @@
+![Logo]("Plugin icon - 1.png")
+
 # SOOP - Simple Project Scaffolding
 
-![[Plugin icon - 1.svg]]
 SOOP is a versatile command-line tool written in Crystal that helps initialize projects for various programming languages. It streamlines the process of setting up new projects with default configurations and provides a unified interface for running projects across different languages.
 
 ## Features
@@ -39,10 +40,10 @@ Examples:
 ```shell
 soop make -l python -n hello -o tmp
 ```
-![[example_python.png]]
+![](example_python.png)
 ### list
 Will list all available templates and their status
-![[out.png]]
+![](out.png)
 
 ## Configuration
 
