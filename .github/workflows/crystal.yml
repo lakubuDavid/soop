@@ -55,7 +55,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: build-*
+          name: build
           path: build/
 
       - name: Create release
