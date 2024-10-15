@@ -11,15 +11,6 @@
 
 #     runs-on: ubuntu-latest
 
-#     container:
-#       image: crystallang/crystal
-
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Install dependencies
-#       run: shards install
-#     - name: Run tests
-#       run: crystal build
 name: Build and Release
 
 on:
@@ -28,14 +19,12 @@ on:
       - '*'
 
 jobs:
-  build-ubuntu:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  build:
+    runs-on: ubuntu-latest
 
     container:
-      image: crystallang/crystal    
+      image: crystallang/crystal  
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,11 +42,11 @@ jobs:
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ runner.os }}
+          name: build
           path: build/
 
   release:
-    needs: build-ubuntu
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
@@ -75,4 +64,6 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-          files: build/**/*
+          files: 
+            build/**/*
+            templates/**/*
