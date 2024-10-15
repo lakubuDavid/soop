@@ -49,7 +49,7 @@ Soop uses a YAML configuration file to define language-specific settings.The  lo
 The default configuration is as follows:
 ```yaml
 go:
-  command: >
+  command: >-
     go mod init {name} &&
     go get github.com/go-chi/chi/v5 &&
     go get github.com/mattn/go-sqlite3 &&
@@ -60,7 +60,7 @@ go:
   justfile_path: "templates/go-air.justfile"
 
 crystal:
-  command: >
+  command: >-
     crystal init app {name}
   description: "Simple hello world program in Crystal"
   check: "crystal"
@@ -68,7 +68,7 @@ crystal:
   justfile_path: "templates/crystal.justfile"
 
 java-console:
-  command: >
+  command: >-
     mvn archetype:generate -DgroupId=com.{name}.app -DartifactId={name}
     -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5
     -DinteractiveMode=false
@@ -84,13 +84,13 @@ python:
   justfile_path: "templates/python.justfile"
 
 csharp-console:
-  command: >
+  command: >-
     dotnet new console -o {name} --use-program-main
   description: "Simple hello world console application in C#"
   check: "dotnet"
 
 echo:
-  command: >
+  command: >-
     echo {name}
   description: "Just echoes back the name"
   check: "echo"
