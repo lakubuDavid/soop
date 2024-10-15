@@ -1,4 +1,4 @@
-![Logo]("Plugin icon - 1.png")
+![Logo]("logo.png")
 
 # SOOP - Simple Project Scaffolding
 
