@@ -28,16 +28,21 @@ on:
       - '*'
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-    
+        os: [ubuntu-latest]
+
+    container:
+      image: crystallang/crystal    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
+      - name: Install dependencies
+        run: shards install
+      
       - name: Set up Just
         run: |
           curl -fsSL https://just.systems/install.sh | bash -s -- --to /usr/local/bin
@@ -52,7 +57,7 @@ jobs:
           path: build/
 
   release:
-    needs: build
+    needs: build-ubuntu
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
