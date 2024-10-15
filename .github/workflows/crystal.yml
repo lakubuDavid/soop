@@ -70,13 +70,41 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: true
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Bundle assets
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ./build/bundle.zip ./build/soop
+      - name: Bundle templates
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ./templates.zip ./templates
+      - name: Upload Bundle Asset
+        id: upload-bundle-asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./build/soop
-          asset_name: soop-release-${{ github.ref }}
+          asset_path: ./build/bundle.zip
+          asset_name: soop-release-linux.zip
           asset_content_type: application/zip
+      - name: Upload Bundle Asset
+        id: upload-template-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./templates.zip
+          asset_name: templates.zip
+          asset_content_type: application/zip
+      - name: Upload Bundle Asset
+        id: upload-default-config 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./config.yml
+          asset_name: config.yml
+          asset_content_type: application/yaml
