@@ -41,9 +41,7 @@ jobs:
 
       - name: Build
         run: crystal build src/main.cr --release --cross-compile --static --link-flags -L/usr/lib -o build/soop
-      - name: Bundle project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip --junk-paths soop-release build/soop
+        
       - name: Archive built artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -77,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./soop-release.zip
-          asset_name: soop-release-${{ github.ref }}.zip
-          asset_content_type: application/zip
+          asset_path: ./build/soop
+          asset_name: soop-release-${{ github.ref }}
+          # asset_content_type: application/zip
