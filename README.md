@@ -1,5 +1,6 @@
 # SOOP - Simple Project Scaffolding
 
+![[Plugin icon - 1.svg]]
 SOOP is a versatile command-line tool written in Crystal that helps initialize projects for various programming languages. It streamlines the process of setting up new projects with default configurations and provides a unified interface for running projects across different languages.
 
 ## Features
