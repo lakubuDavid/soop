@@ -45,7 +45,7 @@ class LanguageInitializer
   def self.generate_file(config : Hash, key : String, name : String, default_name : String, output_path : String)
     if config.has_key?("#{key}_path")
       file_path = config["#{key}_path"].as_s
-      content = File.read(file_path).gsub("{name}", name)
+      content = File.read(get_path file_path).gsub("{name}", name)
       File.write(File.join(output_path, name, default_name), content)
       puts "➤ Generated #{default_name}".cyan
     end
